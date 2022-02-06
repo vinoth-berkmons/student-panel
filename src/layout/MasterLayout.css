@@ -1,0 +1,23 @@
+.wrapper {
+    padding-top: 60px;
+    padding-left: 60px;
+}
+
+.hamBurger {
+    position: fixed;
+    left: 25px;
+    top: 25px;
+    z-index: 999;
+  }
+ .header-wrapper {
+    position: fixed;
+    top: 0;
+    right: 0;
+    z-index: 100;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    background-color: #fff;
+    height: 60px;
+    padding: 0;
+    box-shadow: 0 10px 30px 0 rgb(82 63 105 / 5%);
+ }
