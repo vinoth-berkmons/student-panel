@@ -5,6 +5,13 @@ import { MdOutlineNavigateNext } from 'react-icons/md';
 
 import StudentList from './student-list/StudentList';
 
+/**
+ * Initial Page loads the Dashboard
+ * List of students imported to the dashboard
+ * Pagination 
+ * @returns 
+ */
+
 const Dashboard: FC = () => {
     return (
         <>

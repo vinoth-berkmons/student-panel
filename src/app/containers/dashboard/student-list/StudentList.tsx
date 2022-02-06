@@ -6,6 +6,12 @@ import { DUMMY_DATA } from '../../../common/helpers/Constants';
 import useWindowDimensions from '../../../common/helpers/Utils';
 
 
+/**
+ * List of students listed
+ * Mobile friendly this page
+ * @returns 
+ */
+
 const StudentList: FC = () => {
     const { height } = useWindowDimensions();
     const calculateData = (height - 227) / 40;
