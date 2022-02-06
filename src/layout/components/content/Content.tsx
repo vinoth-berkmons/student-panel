@@ -8,7 +8,7 @@ import React, { FC } from "react"
  */
 const Content: FC = ({ children }) => {
     return (
-        <div>
+        <div className="mt-6 ml-6 mr-6">
             {children}
         </div>
     )
