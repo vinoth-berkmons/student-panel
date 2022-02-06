@@ -1,4 +1,4 @@
-export const DEMO_DATA = [
+export const DUMMY_DATA = [
   {
     id: JSON.stringify(Math.floor(10001232 * Math.random())),
     firstName: "John",
