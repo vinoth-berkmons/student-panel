@@ -1,0 +1,16 @@
+.table-head {
+    background-color: #00a3b8 !important;
+    height: 48px;
+  }
+  .table-head-th {
+    text-align: left;
+    align-items: center;
+    color: #FFF !important;
+  }
+  .table-body-tr td {
+    text-align: left;
+    color: #808080 !important;
+    height: 40px;
+    font-size: 11px;
+    padding-right: 20px;
+  }

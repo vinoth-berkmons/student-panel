@@ -11,7 +11,7 @@ const Header: FC = () => {
 
     return (
         <div className="header-container md:mt-2 flex items-center w-full pr-8 sm:mt-4 xxsm:mt-4">
-            <h2 className="text-blue-900 text-xl">Welcome to Student Panel</h2>
+            <h2 className="primary-txt  text-xl">Welcome to Student Panel</h2>
         </div>
     )
 }
