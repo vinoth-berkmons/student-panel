@@ -5,9 +5,9 @@ import ReactPaginate from 'react-paginate';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 
-import TableList from '../../../common/components/table/TableList';
 import { selectStudents, studentActions } from '../../../store/studentSlice';
 import Loader from '../../../common/components/fallback-view/FallbackView';
+import TableList from '../table/TableList';
 
 
 
