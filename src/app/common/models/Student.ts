@@ -11,7 +11,7 @@ export interface Student {
 }
 
 export interface StudentState {
-  students: Student[] | null;
+  studentsList: Student[] | null;
   loading: boolean;
   status: string;
   error: string | null;

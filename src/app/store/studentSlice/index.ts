@@ -2,6 +2,7 @@ import { createSelector, createSlice } from "@reduxjs/toolkit";
 
 import { StudentState } from "../../common/models/Student";
 import * as CONSTANTS from "../appConstants";
+import { RootState } from "../RootReducer";
 import extraReducers from "./extraReducers";
 import * as thunks from "./thunk";
 
@@ -9,7 +10,7 @@ import * as thunks from "./thunk";
  * Initial State
  */
 const initialState = {
-  students: [],
+  studentsList: [],
   status: CONSTANTS.STORE_STATUS.INIT,
   error: null,
   loading: false,
@@ -43,14 +44,10 @@ const { resetError, setError } = studentSlice.actions;
 /**
  * Student Selectors
  */
-const studentState = (state: StudentState) => state;
+const studentState = (state: RootState) => state.students;
 const storeStatus = createSelector(studentState, (state) => state.status);
 const storeError = createSelector(studentState, (state) => state.error);
-const fetchedStudents = createSelector(studentState, (state) => {
-  console.log(state);
-//   console.log(state.get('students'));
-  return state.students;
-});
+const fetchedStudents = createSelector(studentState, (state) => state.studentsList);
 const loading = createSelector(studentState, (state) => state.loading);
 
 /**
