@@ -36,3 +36,19 @@
     transform: rotate(360deg);
   }
 }
+
+.primary-txt {
+  color: #175269;
+}
+.primary-bg {
+  background: #175269;
+}
+@media only screen and (max-width: 600px) {
+  .react-tabs__tab-list {
+    width: 100vh;
+  }
+
+  .custom-table-list {
+    overflow-x: auto;
+  }
+}
