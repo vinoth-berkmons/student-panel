@@ -9,7 +9,7 @@ export default function (builder: ActionReducerMapBuilder<StudentState>) {
   builder
     .addCase(doFetchStudents.pending, (state: StudentState, {payload}) => {
       state.loading = true;
-      state.students = null;
+      state.studentsList = null;
       state.status = CONSTANTS.STORE_STATUS.BUSY;
     })
     .addCase(doFetchStudents.rejected, (state: StudentState, {payload}) => {
@@ -18,7 +18,7 @@ export default function (builder: ActionReducerMapBuilder<StudentState>) {
     })
     .addCase(doFetchStudents.fulfilled, (state: StudentState, { payload }) => {
       console.log({payload})
-      state.students = payload;
+      state.studentsList = payload;
       state.status = CONSTANTS.STORE_STATUS.IDLE;
       state.loading = false;
     });

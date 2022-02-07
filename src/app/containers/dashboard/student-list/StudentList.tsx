@@ -3,11 +3,11 @@ import './StudentList.css';
 import { FC, useEffect, useState } from 'react';
 import ReactPaginate from 'react-paginate';
 import { useDispatch, useSelector } from 'react-redux';
-
-import { DUMMY_DATA } from '../../../common/helpers/Constants';
-import { selectStudents, studentActions } from '../../../store/studentSlice';
-import TableList from '../table/TableList';
 import { useHistory } from 'react-router-dom';
+
+import { selectStudents, studentActions } from '../../../store/studentSlice';
+import Loader from '../../../common/components/fallback-view/FallbackView';
+import TableList from '../table/TableList';
 
 
 
@@ -33,7 +33,9 @@ const StudentList: FC = () => {
     }, []);
 
     const students = useSelector(selectStudents.fetchedStudents)
+    const loadingStudents = useSelector(selectStudents.loading)
     console.log(students)
+
 
 
 
@@ -46,13 +48,15 @@ const StudentList: FC = () => {
 
     useEffect(() => {
         // Fetch items from another resources.
-        if (!students) {
+        if (!students || students.length <= 0) {
             return;
         }
         const endOffset = itemOffset + perPageCount;
         setCurrentItems(students.slice(itemOffset, endOffset));
         setPageCount(Math.ceil(students.length / perPageCount));
-    }, [itemOffset, perPageCount]);
+    }, [itemOffset, perPageCount, students]);
+
+
 
     // Invoke when user click to request another page.
     const handlePageClick = (event: any) => {
@@ -74,32 +78,35 @@ const StudentList: FC = () => {
 
 
     return (
-        <>
-            <div className="flex flex-col">
-                <div className="overflow-x-auto">
-                    <div className="inline-block min-w-full">
-                        <div className="overflow-x-auto">
-                            <TableList header={TableHeader} currentItems={currentItems} selectedStudent={(id: string) => navigateToStudentDetail(id)} />
+        <> {
+            loadingStudents ? <Loader /> :
+                <div className="flex flex-col">
+                    <div className="overflow-x-auto">
+                        <div className="inline-block min-w-full">
+                            <div className="overflow-x-auto">
+                                <TableList header={TableHeader} currentItems={currentItems} selectedStudent={(id: string) => navigateToStudentDetail(id)} />
+                            </div>
+                        </div>
+                    </div>
+                    <div className="pagination-container">
+                        <div className="pagination items-center">
+                            <ReactPaginate
+                                breakLabel="..."
+                                breakClassName="page-item"
+                                breakLinkClassName="page-link"
+                                nextLabel="Next >"
+                                onPageChange={handlePageClick}
+                                pageRangeDisplayed={3}
+                                pageCount={pageCount}
+                                activeClassName="pagination-active"
+                                previousLabel="< Prev"
+                                renderOnZeroPageCount={undefined}
+                            />
                         </div>
                     </div>
                 </div>
-                <div className="pagination-container">
-                    <div className="pagination items-center">
-                        <ReactPaginate
-                            breakLabel="..."
-                            breakClassName="page-item"
-                            breakLinkClassName="page-link"
-                            nextLabel="Next >"
-                            onPageChange={handlePageClick}
-                            pageRangeDisplayed={3}
-                            pageCount={pageCount}
-                            activeClassName="pagination-active"
-                            previousLabel="< Prev"
-                            renderOnZeroPageCount={undefined}
-                        />
-                    </div>
-                </div>
-            </div>
+        }
+
         </>
     )
 }
