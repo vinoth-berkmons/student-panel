@@ -1,10 +1,19 @@
 import './StudentList.css';
 
-import { FC } from 'react';
+import { FC, useEffect, useState } from 'react';
+import ReactPaginate from 'react-paginate';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { DUMMY_DATA } from '../../../common/helpers/Constants';
-import useWindowDimensions from '../../../common/helpers/Utils';
+import { selectStudents, studentActions } from '../../../store/studentSlice';
+import TableList from '../table/TableList';
+import { useHistory } from 'react-router-dom';
 
+
+
+const TableHeader = ['Full Name', 'Email', 'Mobile Number', 'Course', 'DOB', 'Status'];
+
+const perPageCount = 15;
 
 /**
  * List of students listed
@@ -13,11 +22,56 @@ import useWindowDimensions from '../../../common/helpers/Utils';
  */
 
 const StudentList: FC = () => {
-    const { height } = useWindowDimensions();
-    const calculateData = (height - 227) / 40;
 
-    const count = Math.floor(calculateData);
-    const data = DUMMY_DATA.slice(0, count);
+    const history = useHistory();
+
+    const dispatch = useDispatch();
+
+
+    useEffect(() => {
+        dispatch(studentActions.doFetchStudents());
+    }, []);
+
+    const students = useSelector(selectStudents.fetchedStudents)
+    console.log(students)
+
+
+
+    // We start with an empty list of items.
+    const [currentItems, setCurrentItems] = useState([{}]);
+    const [pageCount, setPageCount] = useState(0);
+    // Here we use item offsets; we could also use page offsets
+    // following the API or data you're working with.
+    const [itemOffset, setItemOffset] = useState(0);
+
+    useEffect(() => {
+        // Fetch items from another resources.
+        if (!students) {
+            return;
+        }
+        const endOffset = itemOffset + perPageCount;
+        setCurrentItems(students.slice(itemOffset, endOffset));
+        setPageCount(Math.ceil(students.length / perPageCount));
+    }, [itemOffset, perPageCount]);
+
+    // Invoke when user click to request another page.
+    const handlePageClick = (event: any) => {
+        if (!students) {
+            return;
+        }
+        const newOffset = (event.selected * perPageCount) % students.length;
+        console.log(
+            `User requested page number ${event.selected}, which is offset ${newOffset}`
+        );
+        setItemOffset(newOffset);
+    };
+
+    const navigateToStudentDetail = (id: string) => {
+        console.log({ id })
+        history.push(`/student?id=${id}`)
+    }
+
+
 
     return (
         <>
@@ -25,52 +79,24 @@ const StudentList: FC = () => {
                 <div className="overflow-x-auto">
                     <div className="inline-block min-w-full">
                         <div className="overflow-x-auto">
-                            <table className="min-w-full text-center">
-                                <thead className="border-b bg-gray-800 table-head">
-                                    <tr>
-                                        <th scope="col" className="text-sm font-medium table-head-th pl-4 whitespace-nowrap">
-                                            <span className="float-left">Full Name</span>
-                                        </th>
-                                        <th scope="col" className="text-sm font-medium table-head-th pl-4 whitespace-nowrap">
-                                            <span className="float-left">Email</span>
-                                        </th>
-                                        <th scope="col" className="text-sm font-medium table-head-th pl-4  whitespace-nowrap">
-                                            <div className="flex">
-                                                <span className="float-left">Mobile Number</span>
-                                            </div>
-
-                                        </th>
-                                        <th scope="col" className="text-sm font-medium table-head-th pl-4 whitespace-nowrap">Course</th>
-                                        <th scope="col" className="text-sm font-medium table-head-th pl-4 whitespace-nowrap">DOB</th>
-                                        <th scope="col" className="text-sm font-medium table-head-th pl-4 whitespace-nowrap">Status</th>
-
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {
-                                        data.map(
-                                            d => {
-                                                return <tr className="bg-white border-b table-body-tr" key={d.id}>
-                                                    <td className="py-2 pl-4 whitespace-nowrap text-sm ">{d.firstName} {d.lastName}</td>
-                                                    <td className="text-sm py-2 pl-4 whitespace-nowrap">
-                                                        <div className="flex items-center">
-                                                            {d.email}
-                                                        </div>
-                                                    </td>
-                                                    <td className="text-sm py-2 pl-4 whitespace-nowrap ">{d.mobile}</td>
-                                                    <td className="text-sm py-2 pl-4 whitespace-nowrap">{d.courses.map(c => c)}</td>
-                                                    <td className="text-sm  py-2 pl-4 whitespace-nowrap">{d.dob}</td>
-                                                    <td className="text-sm  py-2 pl-4 whitespace-nowrap">{d.status}</td>
-
-                                                </tr>
-                                            }
-                                        )
-                                    }
-
-
-                                </tbody>
-                            </table>
+                            <TableList header={TableHeader} currentItems={currentItems} selectedStudent={(id: string) => navigateToStudentDetail(id)} />
                         </div>
+                    </div>
+                </div>
+                <div className="pagination-container">
+                    <div className="pagination items-center">
+                        <ReactPaginate
+                            breakLabel="..."
+                            breakClassName="page-item"
+                            breakLinkClassName="page-link"
+                            nextLabel="Next >"
+                            onPageChange={handlePageClick}
+                            pageRangeDisplayed={3}
+                            pageCount={pageCount}
+                            activeClassName="pagination-active"
+                            previousLabel="< Prev"
+                            renderOnZeroPageCount={undefined}
+                        />
                     </div>
                 </div>
             </div>
