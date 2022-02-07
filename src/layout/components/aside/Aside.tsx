@@ -2,7 +2,7 @@ import './Aside.css';
 
 import React, { FC } from 'react';
 import { BsReverseLayoutSidebarInsetReverse } from 'react-icons/bs';
-import { MdOutlineDashboard } from 'react-icons/md';
+import { MdAdd, MdOutlineDashboard } from 'react-icons/md';
 import { NavLink } from 'react-router-dom';
 
 import { menuItems, MenuItemsConfig } from '../../../app/common/models/Common';
@@ -17,6 +17,8 @@ const Aside: FC<any> = ({ toggleAsideMenu }) => {
         switch (menuId) {
             case 'menu-1':
                 return <MdOutlineDashboard />
+            case 'menu-2':
+                return <MdAdd />
             default:
                 break;
         }
