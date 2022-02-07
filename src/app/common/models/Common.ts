@@ -1,3 +1,4 @@
+
 /** Routes */
 export interface MenuItemsConfig {
     id: string;
@@ -17,7 +18,15 @@ export function menuItems(): MenuItemsConfig[] {
             link: '/dashboard',
             activate: 'txt-light-blue',
             hover: 'txt-light-blue',
+        },
+        {
+            id: 'menu-2',
+            label: 'Add Course',
+            link: '/addCourse',
+            activate: 'txt-light-blue',
+            hover: 'txt-light-blue',
         }
     ]
 }
 
+export const DOTS = '...';
