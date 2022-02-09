@@ -1,5 +1,22 @@
 import { FC } from 'react';
+import Button from '../../../common/components/button/Button';
+import { CourseOption } from '../../../common/models/Courses';
 
+/**
+ * View button data
+ *  To view the details of the student
+ */
+const viewButtonData = {
+    name: 'View',
+    type: 'button'
+}
+
+/**
+ * Table is used to display list of students
+ * Called from StudentList component
+ * @param param0 
+ * @returns 
+ */
 
 const TableList: FC<any> = ({ header, currentItems, selectedStudent }) => {
 
@@ -19,14 +36,14 @@ const TableList: FC<any> = ({ header, currentItems, selectedStudent }) => {
                                 )
                             })
                         }
-
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
                     {
                         currentItems.map(
                             (d: any, i: number) => {
-                                return <tr className="bg-white border-b table-body-tr" key={d.id} onClick={() => selectedStudent(d.id)}>
+                                return <tr className="bg-white border-b table-body-tr h-16" key={d.id}>
                                     <td className="py-2 pl-4 whitespace-nowrap text-sm ">{d.firstName} {d.lastName}</td>
                                     <td className="text-sm py-2 pl-4 whitespace-nowrap">
                                         <div className="flex items-center">
@@ -34,14 +51,16 @@ const TableList: FC<any> = ({ header, currentItems, selectedStudent }) => {
                                         </div>
                                     </td>
                                     <td className="text-sm py-2 pl-4 whitespace-nowrap ">{d.mobile}</td>
-                                    <td className="text-sm py-2 pl-4 whitespace-nowrap">
-                                        {d.courses && d.courses.map((c: string) => {
-                                            return <span className='mr-2'>{c}</span>
-                                        })}
-
-                                    </td>
-                                    <td className="text-sm  py-2 pl-4 whitespace-nowrap">{d.dob}</td>
                                     <td className="text-sm  py-2 pl-4 whitespace-nowrap">{d.status}</td>
+                                    <td className="text-sm py-2 pl-4 whitespace-nowrap ">{d.department}</td>
+                                    <td className="text-sm  py-2 pl-4 whitespace-nowrap">
+                                        <Button
+                                            clickEvent={() => selectedStudent(d.id)}
+                                            width='50px' height='25px'
+                                            formValue={viewButtonData}
+                                            style={{ fontSize: "12px", display: "flex", alignItems: "center" }}
+                                        />
+                                    </td>
 
                                 </tr>
                             }
