@@ -5,45 +5,52 @@ import ReactPaginate from 'react-paginate';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 
-import { selectStudents, studentActions } from '../../../store/studentSlice';
 import Loader from '../../../common/components/fallback-view/FallbackView';
 import TableList from '../table/TableList';
+import { CourseOption } from '../../../common/models/Courses';
+import { selectStudents, studentActions } from '../../../store/studentSlice/studentSlice';
 
 
-
-const TableHeader = ['Full Name', 'Email', 'Mobile Number', 'Course', 'DOB', 'Status'];
+const TableHeader = ['Full Name', 'Email', 'Mobile Number', 'Status', 'Department'];
 
 const perPageCount = 15;
 
 /**
  * List of students listed
  * Mobile friendly this page
+ * handled Pagination
+ * react-paginate Package used
+ * by clicking on the view button redirect to detail page
+ * Student list passed on to table to display the list
  * @returns 
  */
 
 const StudentList: FC = () => {
 
     const history = useHistory();
-
     const dispatch = useDispatch();
 
 
+    /** 
+     * Fetch List of students
+    */
     useEffect(() => {
         dispatch(studentActions.doFetchStudents());
     }, []);
 
     const students = useSelector(selectStudents.fetchedStudents)
     const loadingStudents = useSelector(selectStudents.loading)
-    console.log(students)
+    console.log('students', students);
 
-
-
+    /**
+     * Pagination Scopes starts
+     */
 
     // We start with an empty list of items.
     const [currentItems, setCurrentItems] = useState([{}]);
     const [pageCount, setPageCount] = useState(0);
     // Here we use item offsets; we could also use page offsets
-    // following the API or data you're working with.
+    // following the API or data .
     const [itemOffset, setItemOffset] = useState(0);
 
     useEffect(() => {
@@ -55,8 +62,6 @@ const StudentList: FC = () => {
         setCurrentItems(students.slice(itemOffset, endOffset));
         setPageCount(Math.ceil(students.length / perPageCount));
     }, [itemOffset, perPageCount, students]);
-
-
 
     // Invoke when user click to request another page.
     const handlePageClick = (event: any) => {
@@ -70,6 +75,15 @@ const StudentList: FC = () => {
         setItemOffset(newOffset);
     };
 
+    /**
+       * Pagination Scopes Ends
+    */
+
+
+    /**
+     * Navigate to student detail page by clicking on the view button
+     * @param id 
+     */
     const navigateToStudentDetail = (id: string) => {
         console.log({ id })
         history.push(`/student?id=${id}`)
@@ -84,7 +98,10 @@ const StudentList: FC = () => {
                     <div className="overflow-x-auto">
                         <div className="inline-block min-w-full">
                             <div className="overflow-x-auto">
-                                <TableList header={TableHeader} currentItems={currentItems} selectedStudent={(id: string) => navigateToStudentDetail(id)} />
+                                <TableList
+                                    header={TableHeader}
+                                    currentItems={currentItems}
+                                    selectedStudent={(id: string) => navigateToStudentDetail(id)} />
                             </div>
                         </div>
                     </div>
