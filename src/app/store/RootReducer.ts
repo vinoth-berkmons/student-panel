@@ -1,6 +1,6 @@
 import { combineReducers } from "redux";
-import studentSlice from "./studentSlice";
-
+import studentDetailSlice from "./studentSlice/studentDetailSlice";
+import studentSlice from "./studentSlice/studentSlice";
 
 /**
  * All the common reducers placed in store
@@ -9,10 +9,10 @@ import studentSlice from "./studentSlice";
 
 /**
  * Root reducer holds all the reducer of the app
-*/
+ */
 export const rootReducer = combineReducers({
-    students: studentSlice
-})
+  students: studentSlice,
+  student: studentDetailSlice,
+});
 
-export type RootState = ReturnType<typeof rootReducer>
-
+export type RootState = ReturnType<typeof rootReducer>;
