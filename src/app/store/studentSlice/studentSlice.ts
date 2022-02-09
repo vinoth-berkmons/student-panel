@@ -10,7 +10,7 @@ import * as thunks from "./thunk";
  * Initial State
  */
 const initialState = {
-  studentsList: [],
+  students: [],
   status: CONSTANTS.STORE_STATUS.INIT,
   error: null,
   loading: false,
@@ -20,7 +20,7 @@ const initialState = {
  * Student Slice
  */
 const studentSlice = createSlice({
-  name: "studentsList",
+  name: "student",
   initialState,
   reducers: {
     resetError(state, _action) {
@@ -47,7 +47,7 @@ const { resetError, setError } = studentSlice.actions;
 const studentState = (state: RootState) => state.students;
 const storeStatus = createSelector(studentState, (state) => state.status);
 const storeError = createSelector(studentState, (state) => state.error);
-const fetchedStudents = createSelector(studentState, (state) => state.studentsList);
+const fetchedStudents = createSelector(studentState, (state) => state.students);
 const loading = createSelector(studentState, (state) => state.loading);
 
 /**

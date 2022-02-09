@@ -6,7 +6,7 @@
 .hamBurger {
     position: fixed;
     left: 25px;
-    top: 25px;
+    top: 8px;
     z-index: 999;
   }
  .header-wrapper {

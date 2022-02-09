@@ -37,7 +37,7 @@ const Aside: FC<any> = ({ toggleAsideMenu }) => {
                                 <img src='./images/avatar.jpg' className='profile-img' alt='avatar' />
                                 <div className='flex flex-col mt-1 ml-4'>
                                     <span className='username'>Admin</span>
-                                    <span className='email'>admin@mainteny.com</span>
+                                    <span className='email'>admin@studentpanel.com</span>
                                 </div>
                             </div>
                             <div className="aside-menu hover-scroll-overlay-y">

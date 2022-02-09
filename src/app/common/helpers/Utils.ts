@@ -1,5 +1,10 @@
 import { useState, useEffect } from "react";
 
+
+/**
+ * Window dimension to get the current page size
+ * @returns 
+ */
 function getWindowDimensions() {
   const { innerWidth: width, innerHeight: height } = window;
   return {

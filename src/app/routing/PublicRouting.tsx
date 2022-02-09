@@ -1,7 +1,7 @@
-import React, { lazy, Suspense } from 'react';
+import React from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 
-import FallbackView from '../common/components/fallback-view/FallbackView';
+import AuthPage from '../containers/auth/AuthPage';
 
 
 
@@ -14,15 +14,13 @@ import FallbackView from '../common/components/fallback-view/FallbackView';
  */
 export function PublicRoutes() {
 
-    const Dashboard = lazy(() => import('../containers/dashboard/Dashboard'))
-
     return (
-        <Suspense fallback={<FallbackView />}>
-            <Switch>
-                <Route path='/dashboard' component={Dashboard} />
-                <Redirect exact from='/' to='/dashboard' />
-            </Switch>
-        </Suspense>
+
+        <Switch>
+            <Route path='/auth' component={AuthPage} />
+            <Redirect from='/' to='/auth'/>
+        </Switch>
+
     )
 }
 

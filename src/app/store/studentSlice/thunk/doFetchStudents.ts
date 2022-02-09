@@ -1,19 +1,37 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
-import { FETCH_STUDENTS } from "../constants";
+import { FETCH_STUDENTS, FETCH_STUDENT_DETAIL } from "../constants";
 
-const API = "http://studentpanel.mocklab.io/v1";
+const API = process.env.REACT_APP_API_URL;
 
-const doFetchStudents = createAsyncThunk<any>(FETCH_STUDENTS, async () => {
-  try {
-    const response = await axios.get(`${API}/students`);
-    console.log({ response });
-    return response.data;
-  } catch (e) {
-    console.log(e);
-    throw e;
+/**
+ * Do fetch Api to fetch list of students
+ */
+export const doFetchStudents = createAsyncThunk<any>(
+  FETCH_STUDENTS,
+  async () => {
+    try {
+      const response = await axios.get(`${API}/students`);
+      console.log({ response });
+      return response.data.students;
+    } catch (e) {
+      console.log(e);
+      throw e;
+    }
   }
-});
+);
 
-export default doFetchStudents;
+export const doFetchStudentById = createAsyncThunk(
+  FETCH_STUDENT_DETAIL,
+  async (id: string) => {
+    try {
+      const response = await axios.get(`${API}/student/:${id}`);
+      console.log({ response });
+      return response.data.student;
+    } catch (e) {
+      console.log(e);
+      throw e;
+    }
+  }
+);
