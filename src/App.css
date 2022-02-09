@@ -38,10 +38,13 @@
 }
 
 .primary-txt {
-  color: #175269;
+  color: #175269 !important;
 }
 .primary-bg {
-  background: #175269;
+  background: #175269 !important;
+}
+a {
+  text-decoration: none !important;
 }
 @media only screen and (max-width: 600px) {
   .react-tabs__tab-list {
