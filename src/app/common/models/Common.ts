@@ -29,4 +29,22 @@ export function menuItems(): MenuItemsConfig[] {
     ]
 }
 
+/**
+ * DOTS: this used for pagination
+ */
 export const DOTS = '...';
+
+/**
+ * Button model: styled component button model 
+ */
+export interface ButtonModel {
+    width?: string;
+    height?: string;
+    bg?: string;
+    color?: string;
+    formValue: any;
+    clickEvent?: any;
+    disable?: boolean | undefined;
+    style?: any;
+  }
+  
