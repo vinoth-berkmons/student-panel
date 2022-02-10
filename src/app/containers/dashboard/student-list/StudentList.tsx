@@ -8,13 +8,13 @@ import { useHistory } from 'react-router-dom';
 import Loader from '../../../common/components/fallback-view/FallbackView';
 import { doFetchCourses } from '../../../store/coursesSlice/thunks';
 import { selectStudents, studentActions } from '../../../store/studentSlice/studentSlice';
-import { doFetchStudentById } from '../../../store/studentSlice/thunks';
+import { doFetchNextBatch, doFetchStudentById } from '../../../store/studentSlice/thunks';
 import TableList from '../table/TableList';
+import { selectAuth } from '../../../store/auth/authSlice';
 
 
 const TableHeader = ['Full Name', 'Email', 'Mobile Number', 'Status', 'Department'];
 
-const perPageCount = 10;
 
 
 /**
@@ -35,60 +35,31 @@ const StudentList: FC = () => {
     /** 
      * Fetch List of students
     */
+    const isAuthenticated = useSelector(selectAuth.isAuthenticated);
+    const students = useSelector(selectStudents.fetchedStudents);
+    const totalStudentsCount = useSelector(selectStudents.totalStudentsCount);
+    const loadingStudents = useSelector(selectStudents.loading);
 
-    const students = useSelector(selectStudents.fetchedStudents)
-    const loadingStudents = useSelector(selectStudents.loading)
+    /**
+     * Set loader to load until get the data from store
+     */
+    const loader = !students || loadingStudents;
+
 
     useEffect(() => {
         if (students && students?.length > 0) {
             return;
         }
-        dispatch(studentActions.doFetchStudents());
-    }, []);
-
-    console.log('students', students);
-
-
-
-
-    /**
-     * Pagination Scopes starts
-     */
-
-    // We start with an empty list of items.
-    const [currentItems, setCurrentItems] = useState([{}]);
-    const [pageCount, setPageCount] = useState(0);
-    // Here we use item offsets; we could also use page offsets
-    // following the API or data .
-    const [itemOffset, setItemOffset] = useState(0);
-
-    useEffect(() => {
-        // Fetch items from another resources.
-        if (!students || students.length <= 0) {
-            return;
+        if (isAuthenticated) {
+            dispatch(studentActions.doFetchStudents());
         }
-        const endOffset = itemOffset + perPageCount;
-        setCurrentItems(students.slice(itemOffset, endOffset));
-        setPageCount(Math.ceil(students.length / perPageCount));
-    }, [itemOffset, perPageCount, students]);
+    }, [])
+
 
     // Invoke when user click to request another page.
     const handlePageClick = (event: any) => {
-        console.log(event);
-        if (!students) {
-            console.log(`User requested page number`);
-            return;
-        }
-        const newOffset = (event.selected * perPageCount) % students.length;
-        console.log(
-            `User requested page number ${event.selected}, which is offset ${newOffset}`
-        );
-        setItemOffset(newOffset);
+        dispatch(doFetchNextBatch(event.isNext))
     };
-
-    /**
-       * Pagination Scopes Ends
-    */
 
 
     /**
@@ -106,14 +77,14 @@ const StudentList: FC = () => {
 
     return (
         <> {
-            loadingStudents ? <Loader /> :
+            loader ? <Loader /> :
                 <div className="flex flex-col">
                     <div className="overflow-x-auto">
                         <div className="inline-block min-w-full">
                             <div className="overflow-x-auto">
                                 <TableList
                                     header={TableHeader}
-                                    currentItems={currentItems}
+                                    currentItems={students}
                                     selectedStudent={(id: string) => navigateToStudentDetail(id)} />
                             </div>
                         </div>
@@ -127,11 +98,10 @@ const StudentList: FC = () => {
                                 nextLabel="Next >"
                                 onClick={(e) => handlePageClick(e)}
                                 pageRangeDisplayed={3}
-                                pageCount={pageCount}
+                                pageCount={totalStudentsCount}
                                 activeClassName="pagination-active"
                                 previousLabel="< Prev"
                                 renderOnZeroPageCount={undefined}
-                                prevRel='null'
                             />
                         </div>
                     </div>

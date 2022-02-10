@@ -2,7 +2,6 @@ import { createSelector, createSlice } from "@reduxjs/toolkit";
 
 import {
   Course,
-  CourseOption,
   CoursesState,
 } from "../../common/models/Courses";
 import * as CONSTANTS from "../appConstants";
@@ -22,6 +21,7 @@ const initialState = {
 
 /**
  * Courses Slice
+ * extra reducer handles the Api response to set to the state
  */
 const coursesSlice = createSlice({
   name: "courses",

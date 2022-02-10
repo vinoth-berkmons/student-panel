@@ -17,7 +17,8 @@ const initialState = {
 } as CreateCourseState;
 
 /**
- * Courses Slice
+ * Create Courses Slice
+ * extra reducer handles the Api response to set to the state
  */
 const createCourseSlice = createSlice({
   name: "courses",
