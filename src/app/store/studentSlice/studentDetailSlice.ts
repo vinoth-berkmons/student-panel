@@ -1,10 +1,10 @@
 import { createSelector, createSlice } from "@reduxjs/toolkit";
 
-import { StudentDetailState, StudentState } from "../../common/models/Student";
+import { StudentDetailState } from "../../common/models/Student";
 import * as CONSTANTS from "../appConstants";
 import { RootState } from "../RootReducer";
-import extraReducers from "./extraReducers";
-import * as thunks from "./thunk";
+import * as thunks from "./thunks";
+import { doFetchStudentById } from "./thunks";
 
 /**
  * Initial State
@@ -33,7 +33,26 @@ const studentDetailSlice = createSlice({
       state.error = action.payload;
     },
   },
-  extraReducers,
+  extraReducers: (builder) => {
+    builder
+      .addCase(doFetchStudentById.pending, (state: StudentDetailState) => {
+        state.loading = true;
+        state.status = CONSTANTS.STORE_STATUS.BUSY;
+      })
+      .addCase(doFetchStudentById.rejected, (state: StudentDetailState) => {
+        state.status = CONSTANTS.STORE_STATUS.ERROR;
+        state.loading = false;
+      })
+      .addCase(
+        doFetchStudentById.fulfilled,
+        (state: StudentDetailState, action: any) => {
+          console.log(action.payload);
+          state.student = action.payload;
+          state.status = CONSTANTS.STORE_STATUS.IDLE;
+          state.loading = false;
+        }
+      );
+  },
 });
 
 /**

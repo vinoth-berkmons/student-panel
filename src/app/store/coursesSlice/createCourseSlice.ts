@@ -1,26 +1,26 @@
 import { createSelector, createSlice } from "@reduxjs/toolkit";
 
-import { StudentState } from "../../common/models/Student";
+import { CreateCourseState } from "../../common/models/Courses";
 import * as CONSTANTS from "../appConstants";
 import { RootState } from "../RootReducer";
 import * as thunks from "./thunks";
-import { doFetchStudents } from "./thunks";
+import { doCreateCourse } from "./thunks";
 
 /**
  * Initial State
  */
 const initialState = {
-  students: [],
+  course: {},
   status: CONSTANTS.STORE_STATUS.INIT,
   error: null,
   loading: false,
-} as StudentState;
+} as CreateCourseState;
 
 /**
- * Student Slice
+ * Courses Slice
  */
-const studentSlice = createSlice({
-  name: "student",
+const createCourseSlice = createSlice({
+  name: "courses",
   initialState,
   reducers: {
     resetError(state, _action) {
@@ -35,22 +35,20 @@ const studentSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(doFetchStudents.pending, (state: StudentState) => {
+      .addCase(doCreateCourse.pending, (state: CreateCourseState) => {
         state.loading = true;
-        state.students = null;
+        state.course = null;
         state.status = CONSTANTS.STORE_STATUS.BUSY;
       })
-      .addCase(doFetchStudents.rejected, (state: StudentState, action: any) => {
-        console.log(action.payload);
+      .addCase(doCreateCourse.rejected, (state: CreateCourseState) => {
         state.status = CONSTANTS.STORE_STATUS.ERROR;
         state.loading = false;
-        state.error = action.payload;
       })
       .addCase(
-        doFetchStudents.fulfilled,
-        (state: StudentState, action: any) => {
+        doCreateCourse.fulfilled,
+        (state: CreateCourseState, action: any) => {
           console.log(action.payload);
-          state.students = action.payload;
+          state.course = action.payload;
           state.status = CONSTANTS.STORE_STATUS.IDLE;
           state.loading = false;
         }
@@ -61,31 +59,34 @@ const studentSlice = createSlice({
 /**
  * Actions
  */
-const { resetError, setError } = studentSlice.actions;
+const { resetError, setError } = createCourseSlice.actions;
 
 /**
- * Student Selectors
+ * Courses Selectors
  */
-const studentState = (state: RootState) => state.students;
-const storeStatus = createSelector(studentState, (state) => state.status);
-const storeError = createSelector(studentState, (state) => state.error);
-const fetchedStudents = createSelector(studentState, (state) => state.students);
-const loading = createSelector(studentState, (state) => state.loading);
+const createCourseState = (state: RootState) => state.createCourse;
+const storeStatus = createSelector(createCourseState, (state) => state.status);
+const storeError = createSelector(createCourseState, (state) => state.error);
+const fetchCreatedCourses = createSelector(
+  createCourseState,
+  (state) => state.course
+);
+const loading = createSelector(createCourseState, (state) => state.loading);
 
 /**
  * Exports
  */
-export default studentSlice.reducer;
+export default createCourseSlice.reducer;
 
-export const studentActions = {
+export const createCourseActions = {
   ...thunks,
   resetError,
   setError,
 };
 
-export const selectStudents = {
+export const selectCreateCourses = {
   storeStatus,
   storeError,
   loading,
-  fetchedStudents,
+  fetchCreatedCourses,
 };
