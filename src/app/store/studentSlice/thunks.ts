@@ -1,37 +1,86 @@
-import { createAsyncThunk } from '@reduxjs/toolkit';
-import axios from 'axios';
-import { CourseOption } from '../../common/models/Courses';
-import { RootState } from '../RootReducer';
+import { createAsyncThunk } from "@reduxjs/toolkit";
+import axios from "axios";
+import { CourseOption } from "../../common/models/Courses";
+import { authActions } from "../auth/authSlice";
+import { RootState } from "../RootReducer";
 
-
-import { ENROLL_COURSE, FETCH_STUDENT_DETAIL, FETCH_STUDENTS } from './constants';
+import {
+  ENROLL_COURSE,
+  FETCH_STUDENT_DETAIL,
+  FETCH_STUDENTS,
+  FETCH_BATCH_STUDENTS,
+} from "./constants";
 
 /**
  * Do fetch Api to fetch list of students
  */
 export const doFetchStudents = createAsyncThunk<any>(
   FETCH_STUDENTS,
-  async () => {
+  async (_, { dispatch, getState }) => {
+    const state = getState() as RootState;
+    if (state.students.students) {
+      return;
+    }
+
     try {
-      const response = await axios.get(`/students`);
-      console.log({ response });
-      return response.data.data.students;
-    } catch (e) {
-      console.log(e);
+      const response = await axios.get(
+        `/students?pageSize=${10}&page=${state.students.currentPage}`
+      );
+
+      return response.data.data;
+    } catch (e: any) {
+      const response = e.response;
+      if (response.status === 401) {
+        dispatch(authActions.setAuthenticationInvalid());
+      }
+
       throw e;
     }
   }
 );
 
+/**
+ * Batch API to fetch requested page number and page of the student list API
+ */
+export const doFetchNextBatch = createAsyncThunk(
+  FETCH_BATCH_STUDENTS,
+  async (next: boolean, { dispatch, getState }) => {
+    const state = getState() as RootState;
+    let nextPage = state.students.currentPage - 1;
+    if (next) {
+      nextPage = state.students.currentPage + 1;
+    }
+    try {
+      const response = await axios.get(
+        `/students?pageSize=${10}&page=${nextPage}`
+      );
+      console.log({ response });
+      return { ...response.data.data, nextPage };
+    } catch (e: any) {
+      const response = e.response;
+      if (response.status === 401) {
+        dispatch(authActions.setAuthenticationInvalid());
+      }
+      throw e;
+    }
+  }
+);
+
+/**
+ * Fetch student by Id
+ */
 export const doFetchStudentById = createAsyncThunk(
   FETCH_STUDENT_DETAIL,
-  async (id: string) => {
+  async (id: string, { dispatch }) => {
     try {
       const response = await axios.get(`/students/${id}`);
       console.log({ response });
       return response.data.data;
-    } catch (e) {
-      console.log(e);
+    } catch (e: any) {
+      const response = e.response;
+      if (response.status === 401) {
+        dispatch(authActions.setAuthenticationInvalid());
+      }
       throw e;
     }
   }
@@ -45,8 +94,8 @@ export const doEnrollOrRemoveCourse = createAsyncThunk(
   async (data: CourseOption[], { dispatch, getState }) => {
     const state = getState() as RootState;
     const student = state.student.student;
-    const addCourse = data.filter((d) =>
-      !student?.courses.find((c) => c.id === d.value)
+    const addCourse = data.filter(
+      (d) => !student?.courses.find((c) => c.id === d.value)
     );
 
     const removeCourse = student?.courses
@@ -71,7 +120,11 @@ export const doEnrollOrRemoveCourse = createAsyncThunk(
       });
       dispatch(doFetchStudentById(student.id));
       return response.data.data;
-    } catch (e) {
+    } catch (e: any) {
+      const response = e.response;
+      if (response.status === 401) {
+        dispatch(authActions.setAuthenticationInvalid());
+      }
       throw e;
     }
   }

@@ -18,6 +18,7 @@ const initialState = {
 
 /**
  * Student detail Slice
+ * extra reducer handles the Api response to set to the state
  */
 const studentDetailSlice = createSlice({
   name: "student",

@@ -4,14 +4,14 @@ import * as CONSTANTS from "../appConstants";
 import { AuthState } from "../../common/models/Auth";
 import { RootState } from "../RootReducer";
 
-import * as thunks from "./thunk";
-import { doLogin } from "./thunk";
+import * as thunks from "./thunks";
+import { doLogin, doLogout, setAuthenticationInvalid } from "./thunks";
 
 /**
  * Initial State
  */
 const initialState = {
-  isAuthenticated: false,
+  isAuthenticated: true,
   admin: {},
   status: CONSTANTS.STORE_STATUS.INIT,
   error: null,
@@ -20,6 +20,7 @@ const initialState = {
 
 /**
  * Auth Slice
+ * extra reducer handles the Api response to set to the state
  */
 const authSlice = createSlice({
   name: "auth",
@@ -40,10 +41,12 @@ const authSlice = createSlice({
       .addCase(doLogin.pending, (state: AuthState) => {
         state.loading = true;
         state.admin = null;
+        state.isAuthenticated = false;
         state.status = "BUSY";
       })
       .addCase(doLogin.rejected, (state: AuthState) => {
         state.status = "ERROR";
+        state.isAuthenticated = false;
         state.loading = false;
       })
       .addCase(doLogin.fulfilled, (state: AuthState, action: any) => {
@@ -52,7 +55,16 @@ const authSlice = createSlice({
         state.isAuthenticated = true;
         state.status = "IDLE";
         state.loading = false;
-      });
+      })
+      .addCase(doLogout.fulfilled, (state: AuthState, _action: any) => {
+        state.isAuthenticated = false;
+        state.loading = false;
+      })
+      .addCase(setAuthenticationInvalid.fulfilled, (state: AuthState, _action: any) => {
+        state.isAuthenticated = false;
+        state.loading = false;
+      })
+      ;
   },
 });
 

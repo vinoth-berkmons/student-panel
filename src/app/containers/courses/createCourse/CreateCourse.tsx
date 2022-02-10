@@ -1,11 +1,11 @@
 import './CreateCourse.css';
 
 import { FC } from 'react';
-import { useForm } from "react-hook-form";
-import Button from '../../../common/components/button/Button';
+import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
+
+import Button from '../../../common/components/button/Button';
 import { doCreateCourse } from '../../../store/coursesSlice/thunks';
-import { Course } from '../../../common/models/Courses';
 
 /**
  * Create button Data
@@ -15,6 +15,12 @@ const createButtonData = {
     name: 'Create',
     type: 'submit'
 }
+
+/**
+ * Create course
+ * Used React hook form
+ * @returns 
+ */
 
 const CreateCourse: FC = () => {
     const { register, reset, formState: { errors }, handleSubmit, } = useForm();

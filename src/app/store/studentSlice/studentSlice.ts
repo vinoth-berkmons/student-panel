@@ -4,13 +4,15 @@ import { StudentState } from "../../common/models/Student";
 import * as CONSTANTS from "../appConstants";
 import { RootState } from "../RootReducer";
 import * as thunks from "./thunks";
-import { doFetchStudents } from "./thunks";
+import { doFetchNextBatch, doFetchStudents } from "./thunks";
 
 /**
  * Initial State
  */
 const initialState = {
   students: [],
+  totalCount: 0,
+  currentPage: 1,
   status: CONSTANTS.STORE_STATUS.INIT,
   error: null,
   loading: false,
@@ -18,6 +20,7 @@ const initialState = {
 
 /**
  * Student Slice
+ * extra reducer handles the Api response to set to the state
  */
 const studentSlice = createSlice({
   name: "student",
@@ -43,6 +46,7 @@ const studentSlice = createSlice({
       .addCase(doFetchStudents.rejected, (state: StudentState, action: any) => {
         console.log(action.payload);
         state.status = CONSTANTS.STORE_STATUS.ERROR;
+
         state.loading = false;
         state.error = action.payload;
       })
@@ -50,7 +54,19 @@ const studentSlice = createSlice({
         doFetchStudents.fulfilled,
         (state: StudentState, action: any) => {
           console.log(action.payload);
-          state.students = action.payload;
+          state.students = action.payload.students;
+          state.totalCount = action.payload.totalCount;
+          state.status = CONSTANTS.STORE_STATUS.IDLE;
+          state.loading = false;
+        }
+      )
+      .addCase(
+        doFetchNextBatch.fulfilled,
+        (state: StudentState, action: any) => {
+          console.log(action.payload);
+          state.students = action.payload.students;
+          state.totalCount = action.payload.totalCount;
+          state.currentPage = action.payload.nextPage;
           state.status = CONSTANTS.STORE_STATUS.IDLE;
           state.loading = false;
         }
@@ -70,6 +86,10 @@ const studentState = (state: RootState) => state.students;
 const storeStatus = createSelector(studentState, (state) => state.status);
 const storeError = createSelector(studentState, (state) => state.error);
 const fetchedStudents = createSelector(studentState, (state) => state.students);
+const totalStudentsCount = createSelector(
+  studentState,
+  (state) => state.totalCount
+);
 const loading = createSelector(studentState, (state) => state.loading);
 
 /**
@@ -88,4 +108,5 @@ export const selectStudents = {
   storeError,
   loading,
   fetchedStudents,
+  totalStudentsCount,
 };

@@ -1,6 +1,6 @@
 import { FC } from 'react';
+
 import Button from '../../../common/components/button/Button';
-import { CourseOption } from '../../../common/models/Courses';
 
 /**
  * View button data

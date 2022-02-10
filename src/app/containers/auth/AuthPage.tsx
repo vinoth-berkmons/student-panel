@@ -13,7 +13,9 @@ const AuthPage: FC = () => {
 
     const dispatch = useDispatch();
 
-
+    /**
+     * Set default credentials
+     */
     const login = () => {
         const cred = {
             'userName': 'admin',

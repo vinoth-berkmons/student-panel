@@ -7,7 +7,7 @@ import { FiLogOut } from 'react-icons/fi';
  * Header of the App
  * @returns Header
  */
-const Header: FC = () => {
+const Header: FC<any> = ({ logoutAdmin }) => {
 
     return (
         <div className="header-container mt-2 flex items-center w-full pr-8 sm:mt-4 xxsm:mt-4">
@@ -17,10 +17,10 @@ const Header: FC = () => {
             </div>
             <div className="flex items-center flex-1 justify-end">
                 <div className="logout-btn-container flex">
-                    <button className="md:hidden sm:flex ">
+                    <button className="md:hidden sm:flex " onClick={logoutAdmin}>
                         <FiLogOut />
                     </button>
-                    <button className="logout-btn sm:hidden xxsm:hidden md:flex">
+                    <button className="logout-btn sm:hidden xxsm:hidden md:flex" onClick={logoutAdmin}>
                         <span className="logout-btn-txt">Logout</span>
                     </button>
                 </div>

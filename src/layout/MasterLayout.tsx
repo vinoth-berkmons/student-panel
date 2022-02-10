@@ -9,6 +9,8 @@ import { Aside } from './components/aside/Aside';
 import { Header } from './components/header/Header';
 import useWindowDimensions from '../app/common/helpers/Utils';
 import { Content } from './components/content/Content';
+import { useDispatch } from 'react-redux';
+import { doLogout } from '../app/store/auth/thunks';
 
 
 /**
@@ -25,6 +27,8 @@ const MasterLayout: FC = ({ children }) => {
     const isMobAside = width < 1024;
     const [toggleMenu, setToggle] = useState(true);
 
+    const dispatch = useDispatch();
+
     useEffect(() => {
         if (width < 1023) {
             setToggle(false)
@@ -36,6 +40,10 @@ const MasterLayout: FC = ({ children }) => {
         if (isMobAside) {
             setToggle(false)
         }
+    }
+
+    const logout = () => {
+        dispatch(doLogout())
     }
 
     return (
@@ -63,7 +71,7 @@ const MasterLayout: FC = ({ children }) => {
                         left: toggleMenu ? '260px' : '0px',
                         paddingLeft: toggleMenu ? '35px' : '100px'
                     }}>
-                        <Header />
+                        <Header logoutAdmin={() => logout()} />
                     </div>
                     <div>
                         <Content> {children} </Content>
