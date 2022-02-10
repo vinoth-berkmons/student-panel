@@ -1,0 +1,34 @@
+.card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    word-wrap: break-word;
+    background-color: #fff;
+    background-clip: border-box;
+    border-radius: 0.475rem;
+    border: 0;
+    box-shadow: 0 0 20px 0 rgb(76 87 125 / 2%);
+  }
+  .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: stretch;
+    flex-wrap: wrap;
+    min-height: 70px;
+    padding: 0 2.25rem;
+    background-color: transparent;
+  }
+  .card-body {
+    justify-content: space-between;
+    align-items: stretch;
+    flex-wrap: wrap;
+    min-height: 70px;
+    padding: 1rem 2.25rem;
+    background-color: transparent;
+  }
+  .card-footer-custom {
+    background-color: transparent;
+    border-top: 1px solid #eff2f5;
+  }
+  

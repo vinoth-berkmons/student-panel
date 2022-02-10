@@ -21,8 +21,8 @@ export function menuItems(): MenuItemsConfig[] {
         },
         {
             id: 'menu-2',
-            label: 'Add Course',
-            link: '/addCourse',
+            label: 'Create Course',
+            link: '/createCourse',
             activate: 'txt-light-blue',
             hover: 'txt-light-blue',
         }

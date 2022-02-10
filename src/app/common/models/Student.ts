@@ -1,4 +1,4 @@
-import { CourseOption } from "./Courses";
+import { StudentCourse } from "./Courses";
 
 /**
  * Student model
@@ -13,7 +13,7 @@ export interface Student {
   gender: string;
   dob: Date;
   status: string;
-  courses: CourseOption[];
+  courses: StudentCourse[];
 }
 
 /**
@@ -26,7 +26,7 @@ export interface StudentState {
   error: string | null;
 }
 export interface StudentDetailState {
-  student: Student | null;
+  student: Student ;
   loading: boolean;
   status: string;
   error: string | null;
