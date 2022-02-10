@@ -1,5 +1,7 @@
 import React, { FC } from 'react';
+import { useSelector } from 'react-redux';
 import { Switch } from 'react-router-dom';
+import { selectAuth } from '../store/auth/authSlice';
 import { PrivateRoutes } from './PrivateRouting';
 
 import { PublicRoutes } from './PublicRouting';
@@ -12,12 +14,18 @@ import { PublicRoutes } from './PublicRouting';
  */
 const Routes: FC = () => {
 
-    return (
-        <Switch>
-            {/* <PublicRoutes /> */}
-            <PrivateRoutes/>
-        </Switch>
-    )
+    const isAuthenticated = useSelector(selectAuth.isAuthenticated)
+
+    if (isAuthenticated) {
+        return (
+            <Switch>
+                <PrivateRoutes />
+            </Switch>
+        )
+    }
+
+    return <PublicRoutes />;
+
 
 }
 

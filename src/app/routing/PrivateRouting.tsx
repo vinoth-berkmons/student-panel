@@ -14,6 +14,7 @@ const PrivateRoutes: FC = () => {
      * load on demand
      */
     const Dashboard = lazy(() => import('../containers/dashboard/Dashboard'))
+    const CreateCourse = lazy(() => import('../containers/courses/createCourse/CreateCourse'))
 
     /**
      * Private routes to set the url
@@ -24,7 +25,8 @@ const PrivateRoutes: FC = () => {
                 <MasterLayout>
                     <Route path='/dashboard' component={Dashboard} />
                     <Route path='/student' component={StudentDetail} />
-                    <Redirect exact from='/' to='/dashboard' />
+                    <Route path='/createCourse' component={CreateCourse} />
+                    <Redirect from='/' to='/dashboard' />
                 </MasterLayout>
             </Switch>
         </Suspense>
