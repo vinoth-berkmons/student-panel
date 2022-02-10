@@ -1,15 +1,18 @@
 import './StudentDetail.css';
 
 import React, { FC, useEffect, useState } from 'react';
-// import Button from '../../../common/components/button/Button';
-
-import Select from 'react-select';
-import { CourseOption } from '../../../common/models/Courses';
-import { useHistory, useLocation } from 'react-router-dom';
-import Button from '../../../common/components/button/Button';
 import { useDispatch, useSelector } from 'react-redux';
-import { doFetchStudentById } from '../../../store/studentSlice/thunk';
+import { useHistory } from 'react-router-dom';
+import Select, { MultiValue } from 'react-select';
+
+import Button from '../../../common/components/button/Button';
+import { Course, CourseOption, StudentCourse } from '../../../common/models/Courses';
+import { selectCourses } from '../../../store/coursesSlice/coursesSlice';
 import { selectStudentDetail } from '../../../store/studentSlice/studentDetailSlice';
+import { doEnrollOrRemoveCourse } from '../../../store/studentSlice/thunks';
+import Loader from '../../../common/components/fallback-view/FallbackView';
+
+// import Button from '../../../common/components/button/Button';
 
 
 /**
@@ -31,62 +34,55 @@ const backButtonData = {
     type: 'button'
 }
 
-// interface CourseOption {
-//     newValue: {};
-//     actionMeta: {}
-// }
-
-// const courses: CourseOption[] = [
-//     {
-//         "value": "maths",
-//         "label": "Maths"
-//     },
-//     {
-//         "value": "computer",
-//         "label": "Computer"
-//     },
-//     {
-//         "value": "physics",
-//         "label": "Physics"
-//     }
-// ]
-
-/**
- * URL Query to get the id of the student
- * @returns 
- */
-function useURLQuery() {
-
-
-    const { search } = useLocation();
-
-    return React.useMemo(() => new URLSearchParams(search), [search]);
-}
-
 
 const StudentDetail: FC = () => {
     const history = useHistory();
-    let query = useURLQuery();
 
     const dispatch = useDispatch()
-    const studentDetail = useSelector(selectStudentDetail.fetchedStudent)
-    console.log('studentDetail', studentDetail);
 
     /**
-     * Multi select option scope
-     */
+    * Multi select option scope
+    */
     const [selectedOption, setSelectedOption] = useState<any>([]);
+    const [coursesOption, setCoursesOption] = useState<any>([]);
 
-    useEffect(() => {
-        dispatch(doFetchStudentById(query.get('id') || ''))
-    }, [])
+
+
+
+    const studentDetail = useSelector(selectStudentDetail.fetchedStudent)
+    console.log('studentDetail', studentDetail);
+    const courses = useSelector(selectCourses.fetchedCourses)
+    const courseLoading = useSelector(selectCourses.loading);
+    console.log('courses', courses);
+
+    if (courseLoading || !studentDetail?.courses) {
+        return <Loader />
+    }
+
+    const selectedCourses = studentDetail?.courses.map(c => ({ value: c.id, label: c.name }))
+
+
+    // if (studentDetail?.courses && studentDetail.courses.length > 0) {
+    //     const mappedCourses = mapCourses(studentDetail?.courses)
+    //     console.log('mappedCourses', mappedCourses);
+    //     setSelectedOption(mappedCourses)
+    // }
+    // if (courses && courses?.length > 0) {
+    //     const mappedCourses = mapCourses(courses)
+    //     console.log('mappedCourses', mappedCourses);
+    //     setCoursesOption(mappedCourses)
+
+    // }
+
+
 
 
     /**
      * Save course detail for the student
      */
-    const saveCourseClicked = () => {
-        console.log('saveCourseClicked')
+    const courseSelected = (courses: MultiValue<CourseOption>) => {
+
+        dispatch(doEnrollOrRemoveCourse(courses.map(c => c)))
     }
 
     /**
@@ -160,28 +156,15 @@ const StudentDetail: FC = () => {
                             <div className='row mb-7'>
                                 <label className='col-lg-4 fw-normal text-muted'>Courses</label>
                                 <div className='col-lg-8'>
-                                    <Select
-                                        defaultValue={selectedOption}
+                                    {courseLoading ? <div>Loading...</div> : <Select
+                                        defaultValue={selectedCourses}
                                         isMulti={true}
-                                        onChange={setSelectedOption}
-                                        options={studentDetail.courses}
-                                    />
+                                        onChange={courseSelected}
+                                        options={courses}
+                                    />}
                                 </div>
                             </div>
 
-
-                            <div className='card-footer-custom d-flex justify-content-end py-6 px-9'>
-                                <div className="card-toolbar">
-                                    <Button
-                                        width='110px'
-                                        height='40px'
-                                        bg='#007d8d'
-                                        color='#FFF'
-                                        formValue={saveButtonData}
-                                        disable={false}
-                                        clickEvent={() => saveCourseClicked()} />
-                                </div>
-                            </div>
                         </div>
                     </div>
                 </>
@@ -189,6 +172,17 @@ const StudentDetail: FC = () => {
 
         </>
     )
+}
+
+function mapCourses(courses: Course[] | StudentCourse[]) {
+    let mappedCourses: CourseOption[] = [];
+    courses.map(c => {
+        mappedCourses.push({
+            value: c.id,
+            label: c.name
+        })
+    })
+    return mappedCourses;
 }
 
 

@@ -1,19 +1,21 @@
 import './StudentList.css';
 
-import { FC, useEffect, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import ReactPaginate from 'react-paginate';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 
 import Loader from '../../../common/components/fallback-view/FallbackView';
-import TableList from '../table/TableList';
-import { CourseOption } from '../../../common/models/Courses';
+import { doFetchCourses } from '../../../store/coursesSlice/thunks';
 import { selectStudents, studentActions } from '../../../store/studentSlice/studentSlice';
+import { doFetchStudentById } from '../../../store/studentSlice/thunks';
+import TableList from '../table/TableList';
 
 
 const TableHeader = ['Full Name', 'Email', 'Mobile Number', 'Status', 'Department'];
 
-const perPageCount = 15;
+const perPageCount = 10;
+
 
 /**
  * List of students listed
@@ -30,17 +32,24 @@ const StudentList: FC = () => {
     const history = useHistory();
     const dispatch = useDispatch();
 
-
     /** 
      * Fetch List of students
     */
-    useEffect(() => {
-        dispatch(studentActions.doFetchStudents());
-    }, []);
 
     const students = useSelector(selectStudents.fetchedStudents)
     const loadingStudents = useSelector(selectStudents.loading)
+
+    useEffect(() => {
+        if (students && students?.length > 0) {
+            return;
+        }
+        dispatch(studentActions.doFetchStudents());
+    }, []);
+
     console.log('students', students);
+
+
+
 
     /**
      * Pagination Scopes starts
@@ -65,7 +74,9 @@ const StudentList: FC = () => {
 
     // Invoke when user click to request another page.
     const handlePageClick = (event: any) => {
+        console.log(event);
         if (!students) {
+            console.log(`User requested page number`);
             return;
         }
         const newOffset = (event.selected * perPageCount) % students.length;
@@ -85,6 +96,8 @@ const StudentList: FC = () => {
      * @param id 
      */
     const navigateToStudentDetail = (id: string) => {
+        dispatch(doFetchStudentById(id))
+        dispatch(doFetchCourses())
         console.log({ id })
         history.push(`/student?id=${id}`)
     }
@@ -112,12 +125,13 @@ const StudentList: FC = () => {
                                 breakClassName="page-item"
                                 breakLinkClassName="page-link"
                                 nextLabel="Next >"
-                                onPageChange={handlePageClick}
+                                onClick={(e) => handlePageClick(e)}
                                 pageRangeDisplayed={3}
                                 pageCount={pageCount}
                                 activeClassName="pagination-active"
                                 previousLabel="< Prev"
                                 renderOnZeroPageCount={undefined}
+                                prevRel='null'
                             />
                         </div>
                     </div>
