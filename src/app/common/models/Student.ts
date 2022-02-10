@@ -21,12 +21,14 @@ export interface Student {
  */
 export interface StudentState {
   students: Student[] | null;
+  totalCount: number;
+  currentPage: number;
   loading: boolean;
   status: string;
   error: string | null;
 }
 export interface StudentDetailState {
-  student: Student ;
+  student: Student;
   loading: boolean;
   status: string;
   error: string | null;
