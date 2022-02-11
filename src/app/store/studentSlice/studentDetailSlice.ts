@@ -47,7 +47,6 @@ const studentDetailSlice = createSlice({
       .addCase(
         doFetchStudentById.fulfilled,
         (state: StudentDetailState, action: any) => {
-          console.log(action.payload);
           state.student = action.payload;
           state.status = CONSTANTS.STORE_STATUS.IDLE;
           state.loading = false;

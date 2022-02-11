@@ -11,59 +11,33 @@ This is Mobile friendly Application
       - app
         - common
           - components
-            - button
-            - fallback-view (loader)
+            - All the common components placed it here
           - helpers
-            - Utils.ts
+            - All the common functions placed it here
           - models
-            - Auth.ts
-            - common.ts
-            - Courses.ts
-            - Student.ts
+            - All the models placed it here
           - services
+            - Services can be placed it here
         - containers
-          - auth
-            - AuthPage.tsx
+          - Auth module holds all the authentication related components
           - courses
-            - createCourse
-              - CreateCourse.tsx
+            - Courses module holds all the course related components
           - dashboard
-            - student-list
-              - StudentList.tsx
-            - student-detail
-              - StudentDetail.tsx
-            - table
-              - TableList.tsx
-            - Dashboard.tsx
+            - Dashboard module holds all the students related components
         - routing
-          - Routing.tsx
-          - PrivateRouting.tsx
-          - PublicRouting.tsx
+          - Routing handled here
         - store
-          - auth
-            - authSlice.ts
-            - constants.ts
-            - thunks.ts
+          - Auth
+            - Authentication related redux handled here
           - courseSlice
-            - constants.ts
-            - coursesSlice
-            - createCourseSlice.ts
-            - thunks.ts
+            - Course related redux handled here
           - StudentSlice
-            - constants.ts
-            - studentDetailSlice.ts
-            - studentSlice.ts
-            - thunks.ts
-          - appConstants.ts
-          - RootReducer.ts
-          - Store.ts
+            - Student related redux handled here
+        - Store
+        - RootReducer
+          - Main store and root handled here
       - layout
-      - styles
-        - components
-          - aside
-          - content
-          - header
-        - MasterLayout.tsx
+        - layout of the App handled here
       - App.tsx
       - index.tsx
     - package.josn
@@ -79,7 +53,7 @@ This is Mobile friendly Application
     - Error message for API call fail
 
 ## known issues
-    - Clicking on number of the pagination won't work
+    - Clicking on the number of the pagination won't work
     - Refresh from student detail page  redirect to dashboard
 
 

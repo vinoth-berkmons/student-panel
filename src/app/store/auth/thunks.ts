@@ -8,7 +8,6 @@ import { INVALID, LOGIN, LOGOUT } from "./constants";
  * All the Auth related API call placed it in this file
  */
 export const doLogin = createAsyncThunk(LOGIN, async (credential: {}) => {
-  console.log(credential);
   const { userName, password } = credential as User;
   try {
     const response = await axios({
@@ -22,11 +21,8 @@ export const doLogin = createAsyncThunk(LOGIN, async (credential: {}) => {
         credential: "include",
       },
     });
-
-    console.log({ response });
     return response.data.data;
   } catch (e) {
-    console.log(e);
     throw e;
   }
 });
@@ -47,11 +43,8 @@ export const doLogout = createAsyncThunk(
           credential: "include",
         },
       });
-
-      console.log({ response });
       return response.data.data;
     } catch (e) {
-      console.log(e);
       throw e;
     }
   }

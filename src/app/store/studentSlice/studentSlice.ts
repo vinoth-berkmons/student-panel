@@ -44,7 +44,6 @@ const studentSlice = createSlice({
         state.status = CONSTANTS.STORE_STATUS.BUSY;
       })
       .addCase(doFetchStudents.rejected, (state: StudentState, action: any) => {
-        console.log(action.payload);
         state.status = CONSTANTS.STORE_STATUS.ERROR;
 
         state.loading = false;
@@ -53,7 +52,6 @@ const studentSlice = createSlice({
       .addCase(
         doFetchStudents.fulfilled,
         (state: StudentState, action: any) => {
-          console.log(action.payload);
           state.students = action.payload.students;
           state.totalCount = action.payload.totalCount;
           state.status = CONSTANTS.STORE_STATUS.IDLE;
@@ -63,7 +61,6 @@ const studentSlice = createSlice({
       .addCase(
         doFetchNextBatch.fulfilled,
         (state: StudentState, action: any) => {
-          console.log(action.payload);
           state.students = action.payload.students;
           state.totalCount = action.payload.totalCount;
           state.currentPage = action.payload.nextPage;

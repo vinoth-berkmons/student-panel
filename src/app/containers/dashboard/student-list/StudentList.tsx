@@ -69,7 +69,6 @@ const StudentList: FC = () => {
     const navigateToStudentDetail = (id: string) => {
         dispatch(doFetchStudentById(id))
         dispatch(doFetchCourses())
-        console.log({ id })
         history.push(`/student?id=${id}`)
     }
 

@@ -48,7 +48,6 @@ const createCourseSlice = createSlice({
       .addCase(
         doCreateCourse.fulfilled,
         (state: CreateCourseState, action: any) => {
-          console.log(action.payload);
           state.course = action.payload;
           state.status = CONSTANTS.STORE_STATUS.IDLE;
           state.loading = false;
