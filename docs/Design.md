@@ -51,10 +51,10 @@ This is Mobile friendly Application
     - removing all the course at a time could have been improved
     - Validation for input field
     - Error message for API call fail
-
-## known issues
     - Clicking on the number of the pagination won't work
     - Refresh from student detail page  redirect to dashboard
+
+    
 
 
 
