@@ -49,7 +49,6 @@ const coursesSlice = createSlice({
         state.loading = false;
       })
       .addCase(doFetchCourses.fulfilled, (state: CoursesState, action: any) => {
-        console.log(action.payload);
         state.courses = action.payload.map((c: Course) => ({
           value: c.id,
           label: c.name,

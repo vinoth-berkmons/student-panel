@@ -12,10 +12,8 @@ export const doFetchCourses = createAsyncThunk<any>(
   async () => {
     try {
       const response = await axios.get(`/courses`);
-      console.log({ response });
       return response.data.data;
     } catch (e) {
-      console.log(e);
       throw e;
     }
   }
@@ -39,7 +37,6 @@ export const doFetchCourses = createAsyncThunk<any>(
       });
       return response.data.data;
     } catch (e) {
-      console.log(e);
       throw e;
     }
   }

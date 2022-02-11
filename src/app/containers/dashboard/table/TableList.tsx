@@ -20,8 +20,6 @@ const viewButtonData = {
 
 const TableList: FC<any> = ({ header, currentItems, selectedStudent }) => {
 
-    console.log({ currentItems })
-
     return (
         <>
             <table className="min-w-full text-center">

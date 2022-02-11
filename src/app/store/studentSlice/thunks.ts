@@ -54,7 +54,6 @@ export const doFetchNextBatch = createAsyncThunk(
       const response = await axios.get(
         `/students?pageSize=${10}&page=${nextPage}`
       );
-      console.log({ response });
       return { ...response.data.data, nextPage };
     } catch (e: any) {
       const response = e.response;
@@ -74,7 +73,6 @@ export const doFetchStudentById = createAsyncThunk(
   async (id: string, { dispatch }) => {
     try {
       const response = await axios.get(`/students/${id}`);
-      console.log({ response });
       return response.data.data;
     } catch (e: any) {
       const response = e.response;
@@ -104,7 +102,6 @@ export const doEnrollOrRemoveCourse = createAsyncThunk(
 
     const isAddCourse = addCourse.length > 0;
 
-    console.log({ addCourse, removeCourse, isAddCourse, data, student });
     let course = isAddCourse ? addCourse[0] : removeCourse[0];
     try {
       const response = await axios({

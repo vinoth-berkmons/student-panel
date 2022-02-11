@@ -27,7 +27,6 @@ const CreateCourse: FC = () => {
     const dispatch = useDispatch()
 
     const handleCreateCourse = (data: any) => {
-        console.log(data);
         dispatch(doCreateCourse(data))
         reset()
 

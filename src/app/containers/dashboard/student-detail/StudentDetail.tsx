@@ -37,10 +37,8 @@ const StudentDetail: FC = () => {
     const dispatch = useDispatch()
 
     const studentDetail = useSelector(selectStudentDetail.fetchedStudent)
-    console.log('studentDetail', studentDetail);
     const courses = useSelector(selectCourses.fetchedCourses)
     const courseLoading = useSelector(selectCourses.loading);
-    console.log('courses', courses);
 
     /**
      * If course not loaded then return Loader

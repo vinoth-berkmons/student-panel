@@ -50,7 +50,6 @@ const authSlice = createSlice({
         state.loading = false;
       })
       .addCase(doLogin.fulfilled, (state: AuthState, action: any) => {
-        console.log(action.payload);
         state.admin = action.payload;
         state.isAuthenticated = true;
         state.status = "IDLE";
